@@ -10,19 +10,33 @@
         .glass-header { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); position: sticky; top: 0; z-index: 50; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
-        .category-label-input { background: transparent; border: none; width: 100%; font-size: 10px; color: #6d28d9; font-weight: 800; text-align: center; outline: none; }
-        .item-note-input { font-size: 9px; padding: 1px 2px; border-radius: 4px; border: 1px dashed #ddd; width: 100%; height: 18px; margin-bottom: 2px; outline: none; background: #fff; text-align: center; color: #666; }
-        .day-card { background: white; border-radius: 1rem; padding: 0.8rem; box-shadow: 0 2px 10px rgba(139, 92, 246, 0.08); border: 1px solid #f3f0ff; margin-bottom: 1rem; }
-        .item-box { background-color: #fcfbff; border-radius: 8px; padding: 4px; border: 1px solid #f0edff; display: flex; flex-direction: column; align-items: center; min-height: 52px; justify-content: space-between; }
-        .featured-box { background-color: #f5f3ff; border: 1px solid #e9e4ff; }
+        /* 12格項目標題：經典紫色 */
+        .category-label-input { background: transparent; border: none; width: 100%; font-size: 11px; color: #7c3aed; font-weight: 800; text-align: center; outline: none; }
         
+        /* 項目備註：深灰色 */
+        .item-note-input { font-size: 10px; padding: 1px 2px; border-radius: 4px; border: 1px dashed #ccc; width: 100%; height: 20px; margin-bottom: 2px; outline: none; background: #fff; text-align: center; color: #4b5563; font-weight: 500; }
+        
+        /* 金額輸入：深紫色 */
+        .item-amount-input { width: 66.6%; text-align: right; font-size: 15px; font-weight: 900; background: transparent; outline: none; color: #581c87; }
+        
+        .day-card { background: white; border-radius: 1rem; padding: 0.8rem; box-shadow: 0 2px 10px rgba(139, 92, 246, 0.08); border: 1px solid #f3f0ff; margin-bottom: 1rem; }
+        
+        .item-box { background-color: #f5f3ff; border-radius: 10px; padding: 5px; border: 1px solid #ede9fe; display: flex; flex-direction: column; align-items: center; min-height: 58px; justify-content: space-between; }
+        
+        /* 下方補充內容區域 */
+        .note-container { position: relative; width: 100%; margin-top: 0.75rem; display: flex; align-items: center; gap: 8px; }
+        .tag-icon { font-size: 16px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1)); }
+        /* 今日補充內容：文字顏色為深水藍色 (#0284c7) */
+        .daily-note-box { flex-grow: 1; background: #fdfcff; border: 1px dashed #d1d5db; border-radius: 8px; padding: 6px 10px; font-size: 12px; color: #0284c7; font-weight: 700; outline: none; transition: all 0.2s; }
+        .daily-note-box:focus { border-color: #8b5cf6; background: #fff; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.05); }
+
         .wallet-zone { background: #f3f2ff; border-radius: 0.75rem; padding: 0.5rem 0.6rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.4rem; overflow: hidden; }
         .wallet-row { display: flex; align-items: center; width: 100%; gap: 0.4rem; }
         .wallet-group { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
-        .wallet-input { background: white; border-radius: 6px; text-align: center; font-weight: 900; font-size: 13px; color: #4338ca; border: 1px solid #dbeafe; width: 3.3rem; padding: 2px 0; outline: none; }
         
-        .source-input { background: white; border-radius: 6px; text-align: left; font-weight: 700; font-size: 11px; color: #8b5cf6; border: 1px solid #dbeafe; flex-grow: 1; padding: 2.5px 8px; outline: none; transition: all 0.2s; }
-        .source-input:focus { border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1); }
+        .wallet-input { background: white; border-radius: 6px; text-align: center; font-weight: 900; font-size: 13px; color: #1e3a8a; border: 1px solid #dbeafe; width: 3.3rem; padding: 2px 0; outline: none; }
+        
+        .source-input { background: white; border-radius: 6px; text-align: left; font-weight: 700; font-size: 11px; color: #8b5cf6; border: 1px solid #dbeafe; flex-grow: 1; padding: 2.5px 8px; outline: none; }
         
         .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #8b5cf6; border-radius: 50%; width: 28px; height: 28px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -85,7 +99,7 @@
             { key: 'smoke', label: '煙', icon: '🚬', isCash: true },
             { key: 'family', label: '家庭開銷', icon: '🏠', hasNote: true, isCash: true },
             { key: 'bill', label: '繳費', icon: '💸', hasNote: true, isCash: true },
-            { key: 'others', label: '自訂1', icon: '🎀', editable: true, hasNote: true, isCash: true },
+            { key: 'others', label: '🐷公の錢', icon: '🎀', editable: true, hasNote: true, isCash: true },
             { key: 'others2', label: '自訂2', icon: '🌸', editable: true, hasNote: true, isCash: true },
             { key: 'others3', label: '自訂3', icon: '🌷', editable: true, hasNote: true, isCash: true },
             { key: 'card1', label: '刷卡A', icon: '💳', editable: true, hasNote: true, isCash: false },
@@ -124,10 +138,10 @@
                     onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'data', 'all'), (snap) => {
                         if (snap.exists()) { allData = snap.data(); localStorage.setItem(LOCAL_KEY, JSON.stringify(allData)); }
                         renderList();
-                    });
+                    }, (err) => console.error(err));
                     onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'labels'), (snap) => {
                         if (snap.exists()) { customLabels = snap.data(); localStorage.setItem(LABEL_KEY, JSON.stringify(customLabels)); if(rendered) renderList(); }
-                    });
+                    }, (err) => console.error(err));
                     window.doSync = async () => {
                         if (!currentUser) return;
                         await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'all'), allData);
@@ -146,78 +160,60 @@
 
             let html = '';
             let current = new Date(START_DATE_STR);
-            const end = new Date(END_DATE_STR);
-
-            while (current <= end) {
+            while (current <= new Date(END_DATE_STR)) {
                 const ds = current.toISOString().split('T')[0];
                 const dow = ['日', '一', '二', '三', '四', '五', '六'][current.getDay()];
                 const isW = current.getDay() === 0 || current.getDay() === 6;
                 const dp = ds.split('-');
-
                 if (current.getDate() === 1 || ds === START_DATE_STR) {
-                    html += `
-                        <div class="month-header">
-                            <div class="month-pill">${parseInt(dp[1])}月</div>
-                        </div>`;
+                    html += `<div class="month-header"><div class="month-pill">${parseInt(dp[1])}月</div></div>`;
                 }
-
                 const d = allData[ds] || {};
                 html += `
                     <div class="day-card">
                         <div class="flex items-center gap-3 border-b-2 border-purple-50 pb-2 mb-2">
-                            <!-- 日期區塊 -->
                             <div class="${isW ? 'text-red-500' : 'text-purple-600'} shrink-0 text-center border-r-2 border-purple-100 pr-3 min-w-[75px]">
                                 <div class="text-lg font-black opacity-80 leading-none">${dp[1]}/${dp[2]}</div>
                                 <div class="text-2xl font-black mt-1 leading-none">週${dow}</div>
                             </div>
-                            
                             <div class="wallet-zone">
                                 <div class="wallet-row">
-                                    <div class="wallet-group">
-                                        <span class="text-[8px] font-black text-purple-500 leading-tight">錢包<br>金額</span>
+                                    <div class="wallet-group"><span class="text-[8px] font-black text-blue-900 leading-tight">錢包<br>金額</span>
                                         <input type="number" oninput="u('${ds}','base',this.value)" value="${d.base||''}" class="wallet-input">
                                     </div>
-                                    <div class="wallet-group">
-                                        <span class="text-[8px] font-black text-blue-500 leading-tight">拿取</span>
-                                        <input type="number" oninput="u('${ds}','draw',this.value)" value="${d.draw||''}" class="wallet-input !text-blue-700 !border-blue-100">
+                                    <div class="wallet-group"><span class="text-[8px] font-black text-pink-500 leading-tight">拿取</span>
+                                        <input type="number" oninput="u('${ds}','draw',this.value)" value="${d.draw||''}" class="wallet-input !text-pink-600 !border-pink-100">
                                     </div>
-                                    <!-- 縮小後的剩下金額顯示 -->
                                     <div class="flex-grow flex items-center justify-end border-l-2 border-purple-200 pl-3 gap-1.5">
-                                        <span class="text-[9px] font-black text-gray-400">剩下:</span>
-                                        <span class="text-sm font-black text-purple-700" id="wrem-${ds}">$0</span>
+                                        <span class="text-[9px] font-black text-gray-400">剩下:</span><span class="text-sm font-black text-purple-700" id="wrem-${ds}">$0</span>
                                     </div>
                                 </div>
-                                <div class="wallet-row">
-                                    <span class="text-[8px] font-black text-purple-500 shrink-0">來源:</span>
-                                    <input type="text" 
-                                           oninput="u('${ds}','src',this.value)" 
-                                           value="${d.src||''}" 
-                                           placeholder="輸入資金來源..." 
-                                           class="source-input">
+                                <div class="wallet-row"><span class="text-[8px] font-black text-purple-500 shrink-0">來源:</span>
+                                    <input type="text" oninput="u('${ds}','src',this.value)" value="${d.src||''}" placeholder="輸入資金來源..." class="source-input">
                                 </div>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-4 gap-2">
                             ${categories.map(c => `
-                                <div class="item-box featured-box ${!c.isCash ? '!bg-blue-50/50 !border-blue-100' : ''}">
-                                    <input type="text" value="${customLabels[c.key]||c.label}" ${!c.editable?'readonly':''} onblur="ul('${c.key}',this.value)" class="category-label-input ${!c.isCash ? '!color-blue-600' : ''}">
+                                <div class="item-box">
+                                    <input type="text" value="${customLabels[c.key]||c.label}" ${!c.editable?'readonly':''} onblur="ul('${c.key}',this.value)" class="category-label-input">
                                     ${c.hasNote ? `<input type="text" oninput="u('${ds}','${c.key}_n',this.value)" value="${d[c.key+'_n']||''}" placeholder="..." class="item-note-input">` : ''}
                                     <div class="flex items-center justify-end w-full px-1">
-                                        <span class="text-[10px] mr-auto">${c.icon}</span>
-                                        <input type="number" oninput="u('${ds}','${c.key}',this.value)" value="${d[c.key]||''}" class="w-2/3 text-right text-sm font-black bg-transparent outline-none text-purple-900">
+                                        <span class="text-[12px] mr-auto">${c.icon}</span>
+                                        <input type="number" oninput="u('${ds}','${c.key}',this.value)" value="${d[c.key]||''}" class="item-amount-input">
                                     </div>
                                 </div>
                             `).join('')}
                         </div>
+                        
+                        <div class="note-container">
+                            <span class="tag-icon">🔖</span>
+                            <input type="text" oninput="u('${ds}','daily_note',this.value)" value="${d.daily_note||''}" placeholder="今日補充內容..." class="daily-note-box">
+                        </div>
 
                         <div class="flex justify-between mt-3 pt-2 border-t border-gray-50 items-center">
-                            <div class="text-[10px] font-black text-gray-400 tracking-tight">
-                                口袋剩餘: <span id="pkt-${ds}" class="text-sm ml-1">$0</span>
-                            </div>
-                            <div class="text-[10px] font-black text-purple-400 tracking-tight">
-                                本日花費: <span id="exp-${ds}" class="text-base ml-1 text-purple-700">$0</span>
-                            </div>
+                            <div class="text-[10px] font-black text-gray-400 tracking-tight">口袋剩餘: <span id="pkt-${ds}" class="text-sm ml-1 font-black">$0</span></div>
+                            <div class="text-[10px] font-black text-purple-400 tracking-tight">本日花費: <span id="exp-${ds}" class="text-base ml-1 text-purple-700 font-black">$0</span></div>
                         </div>
                     </div>
                 `;
@@ -227,25 +223,14 @@
             calc();
         }
 
-        window.u = (d, t, v) => {
-            if(!allData[d]) allData[d] = {};
-            allData[d][t] = v;
-            localStorage.setItem(LOCAL_KEY, JSON.stringify(allData));
-            calc();
-            if(isCloud) { clearTimeout(window.syncT); window.syncT = setTimeout(() => window.doSync(), 800); }
-        };
-
+        window.u = (d, t, v) => { if(!allData[d]) allData[d] = {}; allData[d][t] = v; localStorage.setItem(LOCAL_KEY, JSON.stringify(allData)); calc(); if(isCloud) { clearTimeout(window.syncT); window.syncT = setTimeout(() => window.doSync(), 800); } };
         window.ul = (k, v) => { customLabels[k] = v; localStorage.setItem(LABEL_KEY, JSON.stringify(customLabels)); if(isCloud) window.doSync(); };
-
         function calc() {
-            let run = 0;
-            let current = new Date(START_DATE_STR);
+            let run = 0; let current = new Date(START_DATE_STR);
             while (current <= new Date(END_DATE_STR)) {
-                const ds = current.toISOString().split('T')[0];
-                const d = allData[ds] || {};
+                const ds = current.toISOString().split('T')[0]; const d = allData[ds] || {};
                 let b = (d.base !== undefined && d.base !== '') ? Number(d.base) : run;
-                let dr = Number(d.draw) || 0;
-                let dayTotalEx = 0; let dayCashEx = 0;  
+                let dr = Number(d.draw) || 0; let dayTotalEx = 0; let dayCashEx = 0;  
                 categories.forEach(c => { const val = Number(d[c.key]) || 0; dayTotalEx += val; if(c.isCash) dayCashEx += val; });
                 let pkt = dr - dayCashEx; let wRem = b - dr; run = wRem + pkt;
                 if(document.getElementById(`wrem-${ds}`)) document.getElementById(`wrem-${ds}`).innerText = `$${wRem.toLocaleString()}`;
