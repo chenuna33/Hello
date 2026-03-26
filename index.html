@@ -34,7 +34,12 @@
         
         .wallet-input { background: white; border-radius: 6px; text-align: center; font-weight: 900; font-size: 13px; color: #1e3a8a; border: 1px solid #dbeafe; width: 3.3rem; padding: 2px 0; outline: none; }
         
-        .source-input { background: white; border-radius: 6px; text-align: left; font-weight: 700; font-size: 11px; color: #8b5cf6; border: 1px solid #dbeafe; flex-grow: 1; padding: 2.5px 8px; outline: none; }
+        /* 錢包備註輸入框：顏色調整為柔和奶茶咖啡色 (#B08968) */
+        .source-input { background: white; border-radius: 6px; text-align: left; font-weight: 700; font-size: 11px; color: #B08968; border: 1px solid #dbeafe; flex-grow: 1; padding: 2.5px 8px; outline: none; }
+        .source-input::placeholder { color: #B08968; opacity: 0.5; }
+        
+        /* 錢包備註標籤：也調整為一致的奶茶色 (#B08968) */
+        .wallet-note-label { font-size: 9px; font-weight: 900; color: #B08968; flex-shrink: 0; margin-right: -2px; }
         
         .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #8b5cf6; border-radius: 50%; width: 28px; height: 28px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -100,7 +105,6 @@
             { key: 'smoke', label: '🐑的香菸', icon: '🚬', hasNote: true, isCash: true, notePlaceholder: '七星中淡一包' }, 
             { key: 'family', label: '家庭開銷', icon: '🏠', hasNote: true, isCash: true },
             { key: 'bill', label: '繳費', icon: '💸', hasNote: true, isCash: true },
-            // 修正標題為 🐷公の錢
             { key: 'others', label: '🐷公の錢', icon: '🎀', editable: true, hasNote: true, isCash: false },
             { key: 'others2', label: '自訂1', icon: '🌸', editable: true, hasNote: true, isCash: true },
             { key: 'others3', label: '自訂2', icon: '🌷', editable: true, hasNote: true, isCash: true },
@@ -186,8 +190,9 @@
                                         <span class="text-[9px] font-black text-gray-400">剩下:</span><span class="text-sm font-black remaining-amount-red" id="wrem-${ds}">$0</span>
                                     </div>
                                 </div>
-                                <div class="wallet-row"><span class="text-[8px] font-black text-purple-500 shrink-0">來源:</span>
-                                    <input type="text" oninput="u('${ds}','src',this.value)" value="${d.src||''}" placeholder="輸入資金來源..." class="source-input">
+                                <div class="wallet-row">
+                                    <span class="wallet-note-label">備註:</span>
+                                    <input type="text" oninput="u('${ds}','src',this.value)" value="${d.src||''}" placeholder="點擊輸入錢包備註..." class="source-input">
                                 </div>
                             </div>
                         </div>
