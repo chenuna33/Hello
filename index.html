@@ -41,6 +41,9 @@
 
         .month-header { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0 1rem 0; padding: 0.5rem; }
         .month-pill { background-color: #f5f3ff; border: 1px solid #ddd6fe; border-left: 6px solid #8b5cf6; padding: 4px 24px; border-radius: 8px; color: #5b21b6; font-weight: 900; font-size: 1.25rem; box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1); }
+        
+        /* 剩下的錢顏色設定為紅色 */
+        .remaining-amount-red { color: #ef4444; font-weight: 900; }
     </style>
 </head>
 <body class="min-h-screen pb-24">
@@ -97,7 +100,6 @@
             { key: 'smoke', label: '🐑的香菸', icon: '🚬', hasNote: true, isCash: true, notePlaceholder: '七星中淡一包' }, 
             { key: 'family', label: '家庭開銷', icon: '🏠', hasNote: true, isCash: true },
             { key: 'bill', label: '繳費', icon: '💸', hasNote: true, isCash: true },
-            // 修正：將「豬公の錢」改為額外計算（isCash: false），不扣除每日錢包
             { key: 'others', label: '豬公の錢', icon: '🎀', editable: true, hasNote: true, isCash: false },
             { key: 'others2', label: '自訂1', icon: '🌸', editable: true, hasNote: true, isCash: true },
             { key: 'others3', label: '自訂2', icon: '🌷', editable: true, hasNote: true, isCash: true },
@@ -180,7 +182,7 @@
                                         <input type="number" oninput="u('${ds}','draw',this.value)" value="${d.draw||''}" class="wallet-input !text-pink-600 !border-pink-100">
                                     </div>
                                     <div class="flex-grow flex items-center justify-end border-l-2 border-purple-200 pl-3 gap-1.5">
-                                        <span class="text-[9px] font-black text-gray-400">剩下:</span><span class="text-sm font-black text-purple-700" id="wrem-${ds}">$0</span>
+                                        <span class="text-[9px] font-black text-gray-400">剩下:</span><span class="text-sm font-black remaining-amount-red" id="wrem-${ds}">$0</span>
                                     </div>
                                 </div>
                                 <div class="wallet-row"><span class="text-[8px] font-black text-purple-500 shrink-0">來源:</span>
@@ -248,7 +250,6 @@
                 categories.forEach(c => { 
                     const val = Number(d[c.key]) || 0; 
                     dayTotalEx += val; 
-                    // 只有標記為 isCash: true 的項目才會從「拿取金額」中扣除，影響口袋剩餘
                     if(c.isCash) dayCashEx += val; 
                 });
                 
