@@ -23,10 +23,8 @@
         
         .item-box { background-color: #f5f3ff; border-radius: 10px; padding: 5px; border: 1px solid #ede9fe; display: flex; flex-direction: column; align-items: center; min-height: 58px; justify-content: space-between; }
         
-        /* 下方補充內容區域 */
         .note-container { position: relative; width: 100%; margin-top: 0.75rem; display: flex; align-items: center; gap: 8px; }
         .tag-icon { font-size: 16px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1)); }
-        /* 今日補充內容：文字顏色為深水藍色 (#0284c7) */
         .daily-note-box { flex-grow: 1; background: #fdfcff; border: 1px dashed #d1d5db; border-radius: 8px; padding: 6px 10px; font-size: 12px; color: #0284c7; font-weight: 700; outline: none; transition: all 0.2s; }
         .daily-note-box:focus { border-color: #8b5cf6; background: #fff; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.05); }
 
@@ -89,25 +87,24 @@
         const END_DATE_STR = '2026-12-31';
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'purple-expense-2026';
         const LOCAL_KEY = `data_${appId}`;
-        const LABEL_KEY = `labels_${appId}`;
 
+        // 項目定義
         const categories = [
             { key: 'breakfast', label: '早餐', icon: '🥐', hasNote: true, isCash: true },
             { key: 'lunch', label: '午餐', icon: '🍱', hasNote: true, isCash: true },
             { key: 'dinner', label: '晚餐', icon: '🥘', hasNote: true, isCash: true },
             { key: 'drink', label: '飲料', icon: '🧋', hasNote: true, isCash: true },
-            { key: 'smoke', label: '煙', icon: '🚬', isCash: true },
+            { key: 'smoke', label: '🐑的香菸', icon: '🚬', hasNote: true, isCash: true, notePlaceholder: '七星中淡一包' }, 
             { key: 'family', label: '家庭開銷', icon: '🏠', hasNote: true, isCash: true },
             { key: 'bill', label: '繳費', icon: '💸', hasNote: true, isCash: true },
             { key: 'others', label: '🐷公の錢', icon: '🎀', editable: true, hasNote: true, isCash: true },
-            { key: 'others2', label: '自訂2', icon: '🌸', editable: true, hasNote: true, isCash: true },
-            { key: 'others3', label: '自訂3', icon: '🌷', editable: true, hasNote: true, isCash: true },
+            { key: 'others2', label: '自訂1', icon: '🌸', editable: true, hasNote: true, isCash: true },
+            { key: 'others3', label: '自訂2', icon: '🌷', editable: true, hasNote: true, isCash: true },
             { key: 'card1', label: '刷卡A', icon: '💳', editable: true, hasNote: true, isCash: false },
             { key: 'card2', label: '刷卡B', icon: '💳', editable: true, hasNote: true, isCash: false }
         ];
 
         let allData = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}');
-        let customLabels = JSON.parse(localStorage.getItem(LABEL_KEY) || '{}');
         let currentUser = null;
         let isCloud = false;
         let rendered = false;
@@ -139,13 +136,10 @@
                         if (snap.exists()) { allData = snap.data(); localStorage.setItem(LOCAL_KEY, JSON.stringify(allData)); }
                         renderList();
                     }, (err) => console.error(err));
-                    onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'settings', 'labels'), (snap) => {
-                        if (snap.exists()) { customLabels = snap.data(); localStorage.setItem(LABEL_KEY, JSON.stringify(customLabels)); if(rendered) renderList(); }
-                    }, (err) => console.error(err));
+
                     window.doSync = async () => {
                         if (!currentUser) return;
                         await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'all'), allData);
-                        await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'settings', 'labels'), customLabels);
                         const i = document.getElementById('saveIndicator'); i.style.opacity = '1'; setTimeout(() => i.style.opacity = '0', 1000);
                     };
                 }
@@ -194,16 +188,25 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-4 gap-2">
-                            ${categories.map(c => `
+                            ${categories.map(c => {
+                                const labelValue = d[c.key + '_l'] || c.label;
+                                const noteVal = d[c.key+'_n'] || '';
+                                const placeholder = c.notePlaceholder || '...';
+                                return `
                                 <div class="item-box">
-                                    <input type="text" value="${customLabels[c.key]||c.label}" ${!c.editable?'readonly':''} onblur="ul('${c.key}',this.value)" class="category-label-input">
-                                    ${c.hasNote ? `<input type="text" oninput="u('${ds}','${c.key}_n',this.value)" value="${d[c.key+'_n']||''}" placeholder="..." class="item-note-input">` : ''}
+                                    <input type="text" 
+                                        value="${labelValue}" 
+                                        ${!c.editable?'readonly':''} 
+                                        oninput="u('${ds}','${c.key}_l',this.value)" 
+                                        placeholder="${c.label}"
+                                        class="category-label-input">
+                                    ${c.hasNote ? `<input type="text" oninput="u('${ds}','${c.key}_n',this.value)" value="${noteVal}" placeholder="${placeholder}" class="item-note-input">` : ''}
                                     <div class="flex items-center justify-end w-full px-1">
                                         <span class="text-[12px] mr-auto">${c.icon}</span>
                                         <input type="number" oninput="u('${ds}','${c.key}',this.value)" value="${d[c.key]||''}" class="item-amount-input">
                                     </div>
                                 </div>
-                            `).join('')}
+                            `}).join('')}
                         </div>
                         
                         <div class="note-container">
@@ -223,8 +226,17 @@
             calc();
         }
 
-        window.u = (d, t, v) => { if(!allData[d]) allData[d] = {}; allData[d][t] = v; localStorage.setItem(LOCAL_KEY, JSON.stringify(allData)); calc(); if(isCloud) { clearTimeout(window.syncT); window.syncT = setTimeout(() => window.doSync(), 800); } };
-        window.ul = (k, v) => { customLabels[k] = v; localStorage.setItem(LABEL_KEY, JSON.stringify(customLabels)); if(isCloud) window.doSync(); };
+        window.u = (d, t, v) => { 
+            if(!allData[d]) allData[d] = {}; 
+            allData[d][t] = v; 
+            localStorage.setItem(LOCAL_KEY, JSON.stringify(allData)); 
+            calc(); 
+            if(isCloud) { 
+                clearTimeout(window.syncT); 
+                window.syncT = setTimeout(() => window.doSync(), 800); 
+            } 
+        };
+
         function calc() {
             let run = 0; let current = new Date(START_DATE_STR);
             while (current <= new Date(END_DATE_STR)) {
