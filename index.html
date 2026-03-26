@@ -97,7 +97,8 @@
             { key: 'smoke', label: '🐑的香菸', icon: '🚬', hasNote: true, isCash: true, notePlaceholder: '七星中淡一包' }, 
             { key: 'family', label: '家庭開銷', icon: '🏠', hasNote: true, isCash: true },
             { key: 'bill', label: '繳費', icon: '💸', hasNote: true, isCash: true },
-            { key: 'others', label: '🐷公の錢', icon: '🎀', editable: true, hasNote: true, isCash: true },
+            // 修正：將「豬公の錢」改為額外計算（isCash: false），不扣除每日錢包
+            { key: 'others', label: '豬公の錢', icon: '🎀', editable: true, hasNote: true, isCash: false },
             { key: 'others2', label: '自訂1', icon: '🌸', editable: true, hasNote: true, isCash: true },
             { key: 'others3', label: '自訂2', icon: '🌷', editable: true, hasNote: true, isCash: true },
             { key: 'card1', label: '刷卡A', icon: '💳', editable: true, hasNote: true, isCash: false },
@@ -243,11 +244,25 @@
                 const ds = current.toISOString().split('T')[0]; const d = allData[ds] || {};
                 let b = (d.base !== undefined && d.base !== '') ? Number(d.base) : run;
                 let dr = Number(d.draw) || 0; let dayTotalEx = 0; let dayCashEx = 0;  
-                categories.forEach(c => { const val = Number(d[c.key]) || 0; dayTotalEx += val; if(c.isCash) dayCashEx += val; });
-                let pkt = dr - dayCashEx; let wRem = b - dr; run = wRem + pkt;
+                
+                categories.forEach(c => { 
+                    const val = Number(d[c.key]) || 0; 
+                    dayTotalEx += val; 
+                    // 只有標記為 isCash: true 的項目才會從「拿取金額」中扣除，影響口袋剩餘
+                    if(c.isCash) dayCashEx += val; 
+                });
+                
+                let pkt = dr - dayCashEx; 
+                let wRem = b - dr; 
+                run = wRem + pkt;
+                
                 if(document.getElementById(`wrem-${ds}`)) document.getElementById(`wrem-${ds}`).innerText = `$${wRem.toLocaleString()}`;
                 if(document.getElementById(`exp-${ds}`)) document.getElementById(`exp-${ds}`).innerText = `$${dayTotalEx.toLocaleString()}`;
-                if(document.getElementById(`pkt-${ds}`)) { const el = document.getElementById(`pkt-${ds}`); el.innerText = `$${pkt.toLocaleString()}`; el.className = pkt < 0 ? 'text-sm font-black text-red-500 ml-1' : 'text-sm font-black text-green-600 ml-1'; }
+                if(document.getElementById(`pkt-${ds}`)) { 
+                    const el = document.getElementById(`pkt-${ds}`); 
+                    el.innerText = `$${pkt.toLocaleString()}`; 
+                    el.className = pkt < 0 ? 'text-sm font-black text-red-500 ml-1' : 'text-sm font-black text-green-600 ml-1'; 
+                }
                 current.setDate(current.getDate() + 1);
             }
             document.getElementById('finalWalletBalance').innerText = `$ ${run.toLocaleString()}`;
